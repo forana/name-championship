@@ -57,7 +57,7 @@ class Name:
 
     def _update(self, reject: bool) -> None:
         self.cur.execute("begin")
-        self.cur.execute("update names set tier = ?, rejected = ? where name = ?", (self.tier, reject, self.name))
+        self.cur.execute("update names set tier = ?, rejected = ? where name = ?", (self.tier if reject else self.tier + 1, reject, self.name))
         self.cur.execute("commit")
 
     def reject(self):
