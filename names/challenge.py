@@ -32,13 +32,14 @@ class Challenge:
     def run(self):
         while True:
             with closing(self.db.cursor()) as cur:
-                lowest_tier, count = Name.unrejected_tier_counts(cur)[0]
-                if count == 1:
+                tiers = Name.unrejected_tier_counts(cur)
+                if len(tiers) == 1 and tiers[0][1] == 1:
                     print("Looks like we have a winner!")
                     print("")
                     print(io.bold(io.blue(Name.winning_name(cur))))
                     print("")
                     sys.exit(0)
+                lowest_tier, count = tiers[0] 
                 print(io.bold(f"Round {lowest_tier + 1} - {count} left"))
                 choices = Name.pair_for_tier(cur, lowest_tier)
                 if len(choices) == 1:
