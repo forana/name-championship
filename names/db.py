@@ -66,6 +66,11 @@ class Name:
     def advance(self):
         self._update(False)
 
+    @classmethod
+    def top(self, cur: Cursor, n: int) -> List["Name"]:
+        rows = cur.execute("select name, tier, rejected from names order by tier desc, rejected asc, random() asc limit ?", (n,)).fetchall()
+        return [Name(cur, *r) for r in rows]
+
 
 class Log:
     def __init__(self, tier: int, winner: str, loser: str):

@@ -60,3 +60,11 @@ class Challenge:
                         choices[1].reject()
                         Log.log(cur, lowest_tier, None, choices[0].name)
                         Log.log(cur, lowest_tier, None, choices[1].name)
+
+    def stats(self):
+        n = 20
+        print(io.bold(f"Top {n}"))
+        with closing(self.db.cursor()) as cur:
+            top = Name.top(cur, n)
+            for i in range(len(top)):
+                print(f"  {i+1}. {top[i].name} {'(rejected in round ' + str(top[i].tier) + ')' if top[i].rejected else ''}")
